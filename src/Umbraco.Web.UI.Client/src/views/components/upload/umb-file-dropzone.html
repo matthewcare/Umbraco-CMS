@@ -12,7 +12,8 @@
              ngf-allow-dir="true"
              ngf-pattern="{{ accept }}"
              ngf-max-size="{{ maxFileSize }}"
-             ng-class="{'is-small': compact !=='false' || (processed.length + queue.length) > 0 }">
+             ng-class="{'is-small': compact !=='false' || (processed.length + queue.length) > 0 }"
+             ng-if="loaded">
 
             <div class="content">
                 <p>
@@ -74,10 +75,10 @@
                 </div>
             </li>
 
-            <li class="file" ng-if="currentFile">
-                <div class="file-name">{{currentFile.name}} {{currentFile.uploadProgress + '%'}}</div>
+            <li class="file" ng-if="batch.length > 0" ng-repeat="file in batch track by file.key">
+                <div class="file-name">{{file.name}} {{file.uploadProgress + '%'}}</div>
                 <div class="file-progress">
-                    <span class="file-progress-indicator" ng-style="{'width': currentFile.uploadProgress + '%'}"></span>
+                    <span class="file-progress-indicator" ng-style="{'width': file.uploadProgress + '%'}"></span>
                 </div>
             </li>
 

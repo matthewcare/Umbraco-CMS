@@ -46,6 +46,8 @@ angular.module("umbraco.directives")
                     scope.currentFile = undefined;
                     scope.processed = [];
                     scope.totalMessages = 0;
+                    scope.batch = [];
+                    scope.batchSize = 10;
 
                     function _filterFile(file) {
                         var ignoreFileNames = ['Thumbs.db'];
@@ -85,7 +87,7 @@ angular.module("umbraco.directives")
                         }
 
                         // Add the processed length, as we might be uploading in stages
-                        scope.totalQueued = scope.queue.length + scope.processed.length;
+                        scope.totalQueued = scope.queue.length + scope.batch.length + scope.processed.length;
 
                         _processQueueItems();                        
                     }
@@ -108,8 +110,14 @@ angular.module("umbraco.directives")
                                 }, 3000);
                             }
                         } else {
-                            scope.currentFile = scope.queue.shift();
-                            _upload(scope.currentFile);
+                            if (scope.batch.length <= scope.batchSize) {
+                              var fillSize = scope.batchSize - scope.batch.length;
+                              scope.batch = scope.batch.concat(scope.queue.splice(0, fillSize));
+                            }
+                            var queuedInBatch = scope.batch.filter(file => !file.uploading);
+                            Utilities.forEach(queuedInBatch, file => {
+                              _upload(file);
+                            });
                         }
                     }
 
@@ -117,6 +125,7 @@ angular.module("umbraco.directives")
 
                         scope.propertyAlias = scope.propertyAlias ? scope.propertyAlias : "umbracoFile";
                         scope.contentTypeAlias = scope.contentTypeAlias ? scope.contentTypeAlias : "Image";
+                        file.uploading = true;
 
                         Upload.upload({
                                 url: umbRequestHelper.getApiUrl("mediaApiBaseUrl", "PostAddFile"),
@@ -140,8 +149,8 @@ angular.module("umbraco.directives")
                                 // Set server messages
                                 file.messages = data.notifications;
                                 scope.processed.push(file);
+                                scope.batch = scope.batch.filter(batchFile => batchFile.key !== file.key);
                                 //after processing, test if everything is done
-                                scope.currentFile = undefined;
                                 _processQueueItems();
                             })
                             .error(function(evt, status, headers, config) {
@@ -250,8 +259,11 @@ angular.module("umbraco.directives")
                         if (scope.filesQueued) {
                             scope.filesQueued(allFiles, event);
                         }
+
                         _filesQueued(allFiles, event);
                     };
+
+                    scope.loaded = true;
                 }
             };
         });
