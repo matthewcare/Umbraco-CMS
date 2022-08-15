@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Umbraco.Cms.Core.Models.Entities;
 
 namespace Umbraco.Cms.Core.Models;
@@ -35,6 +36,7 @@ public sealed class EntityContainer : TreeEntityBase, IUmbracoEntity
     /// <summary>
     ///     Initializes a new instance of an <see cref="EntityContainer" /> class.
     /// </summary>
+    [Obsolete("Use constructor with all params")]
     public EntityContainer(int id, Guid uniqueId, int parentId, string path, int level, int sortOrder, Guid containedObjectType, string? name, int userId)
         : this(containedObjectType)
     {
@@ -47,6 +49,30 @@ public sealed class EntityContainer : TreeEntityBase, IUmbracoEntity
         SortOrder = sortOrder;
         CreatorId = userId;
     }
+
+    /// <summary>
+    ///     Initializes a new instance of an <see cref="EntityContainer" /> class.
+    /// </summary>
+    public EntityContainer(int id, Guid uniqueId, int parentId, string path, int level, int sortOrder, Guid containedObjectType, string? name, int userId, string? aliasPrefix)
+        : this(containedObjectType)
+    {
+        Id = id;
+        Key = uniqueId;
+        ParentId = parentId;
+        Name = name;
+        Path = path;
+        Level = level;
+        SortOrder = sortOrder;
+        CreatorId = userId;
+        AliasPrefix = aliasPrefix;
+    }
+
+    /// <summary>
+    /// When creating a new type this will be
+    /// prefixed automatically to the alias.
+    /// </summary>
+    [DataMember]
+    public string? AliasPrefix { get; set; }
 
     /// <summary>
     ///     Gets or sets the node object type of the contained objects.

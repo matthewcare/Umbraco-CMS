@@ -486,6 +486,35 @@ function contentTypeResource($q, $http, umbRequestHelper, umbDataFormatter, loca
                         id: args.id
                     }, { responseType: 'text' }),
                 promise);
+      },
+
+        /**
+        * @ngdoc method
+        * @name umbraco.resources.contentTypeResource#getContainer
+        * @methodOf umbraco.resources.contentTypeResource
+        *
+        * @description
+        * Get a content type container with a given ID
+        *
+        * ##usage
+        * <pre>
+        * contentTypeResource.getContainer(1244)
+        *    .then(function() {
+        *       Do stuff..
+        *    });
+        * </pre>
+        * 
+        * @param {Int} id the ID of the container to retrieve
+        * @returns {Promise} resourcePromise object.
+        *
+        */
+        getContainer: function (id) {
+
+          return umbRequestHelper.resourcePromise(
+            $http.get(umbRequestHelper.getApiUrl("contentTypeApiBaseUrl", "GetContainer", { id: id })),
+            'Failed to get folder with id ' + id);
+
+
         },
 
         /**
@@ -506,13 +535,14 @@ function contentTypeResource($q, $http, umbRequestHelper, umbDataFormatter, loca
         * 
         * @param {Int} parentId the ID of the parent content type underneath which to create the container
         * @param {String} name the name of the container
+        * @param {String} aliasPrefix the prefix to apply to items under the container
         * @returns {Promise} resourcePromise object.
         *
         */
-        createContainer: function (parentId, name) {
+        createContainer: function (parentId, name, aliasPrefix) {
 
             return umbRequestHelper.resourcePromise(
-                $http.post(umbRequestHelper.getApiUrl("contentTypeApiBaseUrl", "PostCreateContainer", { parentId: parentId, name: encodeURIComponent(name) })),
+                $http.post(umbRequestHelper.getApiUrl("contentTypeApiBaseUrl", "PostCreateContainer", { parentId: parentId, name: encodeURIComponent(name), aliasPrefix: encodeURIComponent(aliasPrefix) })),
                 'Failed to create a folder under parent id ' + parentId);
 
 
@@ -547,6 +577,39 @@ function contentTypeResource($q, $http, umbRequestHelper, umbDataFormatter, loca
                     { id: id, name: name })),
                 "Failed to rename the folder with id " + id
             );
+
+      },
+
+        /**
+        * @ngdoc method
+        * @name umbraco.resources.contentTypeResource#editContainer
+        * @methodOf umbraco.resources.contentTypeResource
+        *
+        * @description
+        * Edit a container of a given id
+        *
+        * ##usage
+        * <pre>
+        * contentTypeResource.editContainer( 1244,"testcontainer", "testAliasPrefix")
+        *    .then(function() {
+        *       Do stuff..
+        *    });
+        * </pre>
+        *
+        * @param {Int} id the ID of the container to rename
+        * @param {String} name the new name of the container
+        * @param {String} aliasPrefix the new alias prefix
+        * @returns {Promise} resourcePromise object.
+        *
+        */
+        editContainer: function (id, name, aliasPrefix) {
+
+          return umbRequestHelper.resourcePromise(
+            $http.post(umbRequestHelper.getApiUrl("contentTypeApiBaseUrl",
+              "PostEditContainer",
+              { id: id, name: name, aliasPrefix: aliasPrefix })),
+            "Failed to edit the folder with id " + id
+          );
 
         },
 

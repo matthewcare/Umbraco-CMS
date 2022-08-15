@@ -116,7 +116,7 @@ internal class EntityContainerRepository : EntityRepositoryBase<int, EntityConta
         var entity = new EntityContainer(nodeDto.NodeId, nodeDto.UniqueId,
             nodeDto.ParentId, nodeDto.Path, nodeDto.Level, nodeDto.SortOrder,
             containedObjectType,
-            nodeDto.Text, nodeDto.UserId ?? Constants.Security.UnknownUserId);
+            nodeDto.Text, nodeDto.UserId ?? Constants.Security.UnknownUserId, nodeDto.AliasPrefix);
 
         // reset dirty initial properties (U4-1946)
         entity.ResetDirtyProperties(false);
@@ -234,6 +234,7 @@ internal class EntityContainerRepository : EntityRepositoryBase<int, EntityConta
             Text = entity.Name,
             UserId = entity.CreatorId,
             UniqueId = entity.Key,
+            AliasPrefix = entity.AliasPrefix,
         };
 
         // insert, get the id, update the path with the id
@@ -295,6 +296,7 @@ internal class EntityContainerRepository : EntityRepositoryBase<int, EntityConta
 
         // update
         nodeDto.Text = entity.Name;
+        nodeDto.AliasPrefix = entity.AliasPrefix;
         if (nodeDto.ParentId != entity.ParentId)
         {
             nodeDto.Level = 0;

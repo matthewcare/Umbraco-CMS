@@ -27,7 +27,7 @@ function DocumentTypesCreateController($scope, $location, navigationService, con
 
     if (formHelper.submitForm({scope: $scope, formCtrl: $scope.createFolderForm})) {
 
-      contentTypeResource.createContainer(node.id, $scope.model.folderName).then(function (folderId) {
+      contentTypeResource.createContainer(node.id, $scope.model.folderName, $scope.model.documentTypeAliasPrefix).then(function (folderId) {
 
         navigationService.hideMenu();
 

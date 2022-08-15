@@ -55,7 +55,8 @@ angular.module("umbraco.directives")
             templateUrl: 'views/components/umb-generate-alias.html',
             replace: true,
             scope: {
-                alias: '=',
+              alias: '=',
+              aliasPrefix: '=',
                 aliasFrom: '=',
                 enableLock: '=?',
                 validationPosition: '=?',
@@ -97,7 +98,8 @@ angular.module("umbraco.directives")
                     scope.placeholderText = scope.labels.busy;
 
                     generateAliasTimeout = $timeout(function () {
-                       updateAlias = true;
+                      updateAlias = true;
+                      value = scope.aliasPrefix ? scope.aliasPrefix + " " + value : value; 
                         entityResource.getSafeAlias(value, true).then(function (safeAlias) {
                             if (updateAlias) {
                                 scope.alias = safeAlias.alias;

@@ -270,6 +270,18 @@ public class ContentTypeController : ContentTypeControllerBase<IContentType>
     }
 
     /// <summary>
+    ///     Gets a document type container with a given ID
+    /// </summary>
+    [HttpGet]
+    [Authorize(Policy = AuthorizationPolicies.TreeAccessDocumentTypes)]
+    public IActionResult GetContainer(int id)
+    {
+        var container = _contentTypeService.GetContainer(id);
+
+        return Ok(container);
+    }
+
+    /// <summary>
     ///     Deletes a document type container with a given ID
     /// </summary>
     [HttpDelete]
@@ -283,10 +295,10 @@ public class ContentTypeController : ContentTypeControllerBase<IContentType>
     }
 
     [Authorize(Policy = AuthorizationPolicies.TreeAccessDocumentTypes)]
-    public IActionResult PostCreateContainer(int parentId, string name)
+    public IActionResult PostCreateContainer(int parentId, string name, string aliasPrefix)
     {
         Attempt<OperationResult<OperationResultType, EntityContainer>?> result =
-            _contentTypeService.CreateContainer(parentId, Guid.NewGuid(), name, _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.Id ?? -1);
+            _contentTypeService.CreateContainer(parentId, Guid.NewGuid(), name, aliasPrefix, _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.Id ?? -1);
 
         if (result.Success)
         {
@@ -301,6 +313,20 @@ public class ContentTypeController : ContentTypeControllerBase<IContentType>
     {
         Attempt<OperationResult<OperationResultType, EntityContainer>?> result =
             _contentTypeService.RenameContainer(id, name, _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.Id ?? -1);
+
+        if (result.Success)
+        {
+            return Ok(result.Result); //return the id
+        }
+
+        return ValidationProblem(result.Exception?.Message);
+    }
+
+    [Authorize(Policy = AuthorizationPolicies.TreeAccessDocumentTypes)]
+    public IActionResult PostEditContainer(int id, string name, string? aliasPrefix)
+    {
+        Attempt<OperationResult<OperationResultType, EntityContainer>?> result =
+            _contentTypeService.EditContainer(id, name, aliasPrefix, _backofficeSecurityAccessor.BackOfficeSecurity?.CurrentUser?.Id ?? -1);
 
         if (result.Success)
         {

@@ -85,6 +85,7 @@ public interface IContentTypeBaseService<TItem> : IContentTypeBaseService, IServ
     bool HasContainerInPath(params int[] ids);
 
     Attempt<OperationResult<OperationResultType, EntityContainer>?> CreateContainer(int parentContainerId, Guid key, string name, int userId = Constants.Security.SuperUserId);
+    Attempt<OperationResult<OperationResultType, EntityContainer>?> CreateContainer(int parentContainerId, Guid key, string name, string? aliasPrefix, int userId = Constants.Security.SuperUserId);
 
     Attempt<OperationResult?> SaveContainer(EntityContainer container, int userId = Constants.Security.SuperUserId);
 
@@ -101,6 +102,7 @@ public interface IContentTypeBaseService<TItem> : IContentTypeBaseService, IServ
     Attempt<OperationResult?> DeleteContainer(int containerId, int userId = Constants.Security.SuperUserId);
 
     Attempt<OperationResult<OperationResultType, EntityContainer>?> RenameContainer(int id, string name, int userId = Constants.Security.SuperUserId);
+    Attempt<OperationResult<OperationResultType, EntityContainer>?> EditContainer(int id, string name, string? aliasPrefix, int userId = Constants.Security.SuperUserId);
 
     Attempt<OperationResult<MoveOperationStatusType>?> Move(TItem moving, int containerId);
 

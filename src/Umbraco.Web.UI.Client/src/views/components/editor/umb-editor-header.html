@@ -1,4 +1,4 @@
-﻿<div data-element="editor-header" class="umb-editor-header" ng-class="{'-split-view-active': splitViewOpen === true}">
+<div data-element="editor-header" class="umb-editor-header" ng-class="{'-split-view-active': splitViewOpen === true}">
     <umb-loader ng-show="loading"></umb-loader>
     <div class="flex items-center" style="height: 100%;" ng-hide="loading">
 
@@ -59,6 +59,7 @@
                                         class="umb-panel-header-alias"
                                         ng-if="!hideAlias"
                                         alias="$parent.alias"
+                                        alias-prefix="$parent.aliasPrefix"
                                         alias-from="$parent.name"
                                         enable-lock="aliasLocked !== true"
                                         validation-position="'right'"

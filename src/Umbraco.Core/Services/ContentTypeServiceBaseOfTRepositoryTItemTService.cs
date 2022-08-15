@@ -899,6 +899,9 @@ public abstract class ContentTypeServiceBase<TRepository, TItem> : ContentTypeSe
     protected Guid ContainerObjectType => EntityContainer.GetContainerObjectType(ContainedObjectType);
 
     public Attempt<OperationResult<OperationResultType, EntityContainer>?> CreateContainer(int parentId, Guid key, string name, int userId = Constants.Security.SuperUserId)
+        => CreateContainer(parentId, key, name, null, userId);
+
+    public Attempt<OperationResult<OperationResultType, EntityContainer>?> CreateContainer(int parentId, Guid key, string name, string? aliasPrefix, int userId = Constants.Security.SuperUserId)
     {
         EventMessages eventMessages = EventMessagesFactory.Get();
         using ICoreScope scope = ScopeProvider.CreateCoreScope();
@@ -911,7 +914,8 @@ public abstract class ContentTypeServiceBase<TRepository, TItem> : ContentTypeSe
                 Name = name,
                 ParentId = parentId,
                 CreatorId = userId,
-                Key = key
+                Key = key,
+                AliasPrefix = aliasPrefix,
             };
 
             var savingNotification = new EntityContainerSavingNotification(container, eventMessages);
@@ -1062,6 +1066,11 @@ public abstract class ContentTypeServiceBase<TRepository, TItem> : ContentTypeSe
 
     public Attempt<OperationResult<OperationResultType, EntityContainer>?> RenameContainer(int id, string name, int userId = Constants.Security.SuperUserId)
     {
+        return EditContainer(id, name, null, userId);
+    }
+
+    public Attempt<OperationResult<OperationResultType, EntityContainer>?> EditContainer(int id, string name, string? aliasPrefix, int userId = Constants.Security.SuperUserId)
+    {
         EventMessages eventMessages = EventMessagesFactory.Get();
         using (ICoreScope scope = ScopeProvider.CreateCoreScope())
         {
@@ -1078,6 +1087,7 @@ public abstract class ContentTypeServiceBase<TRepository, TItem> : ContentTypeSe
                 }
 
                 container.Name = name;
+                container.AliasPrefix = aliasPrefix;
 
                 var renamingNotification = new EntityContainerRenamingNotification(container, eventMessages);
                 if (scope.Notifications.PublishCancelable(renamingNotification))

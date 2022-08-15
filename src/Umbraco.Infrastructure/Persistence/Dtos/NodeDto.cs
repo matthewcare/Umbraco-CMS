@@ -56,6 +56,10 @@ public class NodeDto
     [NullSetting(NullSetting = NullSettings.Null)]
     public string? Text { get; set; }
 
+    [Column("aliasPrefix")]
+    [NullSetting(NullSetting = NullSettings.Null)]
+    public string? AliasPrefix { get; set; }
+
     [Column("nodeObjectType")] // TODO: db rename to 'objectType'
     [NullSetting(NullSetting = NullSettings.Null)]
     [Index(IndexTypes.NonClustered, Name = "IX_" + TableName + "_ObjectType", ForColumns = "nodeObjectType,trashed", IncludeColumns = "uniqueId,parentId,level,path,sortOrder,nodeUser,text,createDate")]
