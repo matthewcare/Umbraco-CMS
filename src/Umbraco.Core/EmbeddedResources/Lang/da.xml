@@ -1773,7 +1773,7 @@ Mange hilsner fra Umbraco robotten
     <key alias="memberGroups">Medlemsgrupper</key>
     <key alias="memberRoles">Roller</key>
     <key alias="memberTypes">Medlemstyper</key>
-    <key alias="documentTypes">Dokumenttyper</key>
+    <key alias="documentTypes">Indholdstyper</key>
     <key alias="relationTypes">Relationstyper</key>
     <key alias="packager">Pakker</key>
     <key alias="packages">Pakker</key>

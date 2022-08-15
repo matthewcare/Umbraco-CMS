@@ -2064,7 +2064,7 @@ To manage your website, simply open the Umbraco backoffice and start adding cont
     <key alias="memberGroups">Member Groups</key>
     <key alias="memberRoles">Member Roles</key>
     <key alias="memberTypes">Member Types</key>
-    <key alias="documentTypes">Document Types</key>
+    <key alias="documentTypes">Content Types</key>
     <key alias="relationTypes">Relation Types</key>
     <key alias="packager">Packages</key>
     <key alias="packages">Packages</key>
