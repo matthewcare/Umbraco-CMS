@@ -16,7 +16,7 @@ angular.module("umbraco").controller("Umbraco.Editors.TreePickerController",
         var tree = null;
 
         // Search and listviews is only working for content, media and member section
-        var searchableSections = ["content", "media", "member"];
+        var searchableSections = ["content", "media", "member", "settings"];
         // tracks all expanded paths so when the language is switched we can resync it with the already loaded paths
         var expandedPaths = [];
 

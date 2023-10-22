@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @ngdoc directive
 * @name umbraco.directives.directive:umbTreeSearchBox
 * @function
@@ -65,7 +65,8 @@ function treeSearchBox($q, searchService) {
                         searchArgs["dataTypeKey"] = scope.datatypeKey;
                     }
 
-                    searcher(searchArgs).then(function (data) {
+                  searcher(searchArgs).then(function (data) {
+                      debugger
                         scope.searchCallback(data);
                         //set back to null so it can be re-created
                         canceler = null;
@@ -84,13 +85,16 @@ function treeSearchBox($q, searchService) {
                 });
             }, 200));
 
-            var searcher = searchService.searchContent;
+          var searcher = searchService.searchContent;
             //search
             if (scope.section === "member") {
                 searcher = searchService.searchMembers;
             }
             else if (scope.section === "media") {
                 searcher = searchService.searchMedia;
+            }
+            else if (scope.section === "settings") {
+              searcher = searchService.searchSettings;
             }
         }
     };

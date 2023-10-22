@@ -66,16 +66,20 @@ public class UmbracoTreeSearcher
         string? searchFrom = null,
         bool ignoreUserStartNodes = false)
     {
-        IEnumerable<ISearchResult> pagedResult = _backOfficeExamineSearcher.Search(query, entityType, pageSize, pageIndex, out totalFound, searchFrom, ignoreUserStartNodes);
-
+        IEnumerable<ISearchResult> pagedResult;
         switch (entityType)
         {
             case UmbracoEntityTypes.Member:
+                pagedResult = _backOfficeExamineSearcher.Search(query, entityType, pageSize, pageIndex, out totalFound, searchFrom, ignoreUserStartNodes);
                 return MemberFromSearchResults(pagedResult.ToArray());
             case UmbracoEntityTypes.Media:
+                pagedResult = _backOfficeExamineSearcher.Search(query, entityType, pageSize, pageIndex, out totalFound, searchFrom, ignoreUserStartNodes);
                 return MediaFromSearchResults(pagedResult);
             case UmbracoEntityTypes.Document:
+                pagedResult = _backOfficeExamineSearcher.Search(query, entityType, pageSize, pageIndex, out totalFound, searchFrom, ignoreUserStartNodes);
                 return ContentFromSearchResults(pagedResult, culture);
+            case UmbracoEntityTypes.DocumentType:
+                return EntitySearch(UmbracoObjectTypes.DocumentType, query, pageSize, pageIndex, out totalFound, searchFrom).WhereNotNull();
             default:
                 throw new NotSupportedException("The " + typeof(UmbracoTreeSearcher) +
                                                 " currently does not support searching against object type " +

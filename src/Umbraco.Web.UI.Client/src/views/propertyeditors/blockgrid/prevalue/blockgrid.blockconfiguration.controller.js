@@ -238,7 +238,7 @@
                         }
                     ]
                 };
-                editorService.treePicker(contentTypePicker);
+                editorService.contentTypePicker(contentTypePicker);
 
             });
         };

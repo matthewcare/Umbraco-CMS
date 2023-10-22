@@ -22,6 +22,7 @@ namespace Umbraco.Cms.Web.BackOffice.Trees;
 [Tree(Constants.Applications.Settings, Constants.Trees.DocumentTypes, SortOrder = 0, TreeGroup = Constants.Trees.Groups.Settings)]
 [PluginController(Constants.Web.Mvc.BackOfficeTreeArea)]
 [CoreTree]
+[SearchableTree("searchResultFormatter", "configureContentTypeResult", 10)]
 public class ContentTypeTreeController : TreeController, ISearchableTree
 {
     private readonly IContentTypeService _contentTypeService;

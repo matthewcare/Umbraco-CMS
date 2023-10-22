@@ -100,6 +100,29 @@ angular.module('umbraco.services')
 
             /**
             * @ngdoc method
+            * @name umbraco.services.searchService#searchSettings
+            * @methodOf umbraco.services.searchService
+            *
+            * @description
+            * Searches content types
+            * @param {Object} args argument object
+            * @param {String} args.term seach term
+            * @returns {Promise} returns promise containing all matching content types
+            */
+            searchSettings: function (args) {
+                if (!args.term) {
+                    throw "args.term is required";
+                }
+
+                return entityResource.search(args.term, "DocumentType", args.searchFrom, args.canceler, args.dataTypeKey)
+                    .then(data => {
+                      data.forEach(item => searchResultFormatter.configureContentTypeResult(item));
+                        return data;
+                    });
+            },
+
+            /**
+            * @ngdoc method
             * @name umbraco.services.searchService#searchAll
             * @methodOf umbraco.services.searchService
             *

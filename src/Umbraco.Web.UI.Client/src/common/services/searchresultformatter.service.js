@@ -26,11 +26,19 @@ function searchResultFormatter(umbRequestHelper) {
         Utilities.extend(media.metaData, { treeAlias: treeAlias });
     }
 
+  function configureContentTypeResult(contentType, treeAlias, appAlias) {
+      debugger
+      contentType.menuUrl = umbRequestHelper.getApiUrl("contentTypeApiBaseUrl", "GetMenu", [{ id: contentType.id }, { application: appAlias }]);
+      contentType.editorPath = appAlias + "/" + treeAlias + "/edit/" + contentType.id;
+      Utilities.extend(contentType.metaData, { treeAlias: treeAlias });
+    }
+
     return {
         configureContentResult: configureContentResult,
         configureMemberResult: configureMemberResult,
         configureMediaResult: configureMediaResult,
-        configureDefaultResult: configureDefaultResult
+        configureDefaultResult: configureDefaultResult,
+        configureContentTypeResult: configureContentTypeResult
     };
 }
 
